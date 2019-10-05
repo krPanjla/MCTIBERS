@@ -17,13 +17,13 @@
             android:orientation="vertical">
 
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageView2"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:layout_marginTop="30dp"
 
-                android:src="@drawable/cop1" />
+                android:src="@drawable/logostep" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"

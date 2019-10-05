@@ -3,18 +3,20 @@ package com.volvain.yash;
 import android.content.Context;
 import android.util.Log;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.HttpURLConnection;
-import java.util.Map;
-
+import com.volvain.yash.DAO.Database;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class Server  {
 
@@ -27,16 +29,34 @@ Server(Context context){
 this.context=context;
 serverUri=context.getString(R.string.server);
 }
+public String getUserLoc(Long id){
 
+    String result="";
+    try{
+
+        url=new URL(serverUri+"getUserLoc?id="+id);
+        con=(HttpURLConnection)url.openConnection();
+        BufferedInputStream in=new BufferedInputStream(con.getInputStream());
+        int i=0;
+        while((i=in.read())!=-1)result+=(char)i;
+    } catch (MalformedURLException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return result;
+}
     public int SendUserLoc(Long id,String locDetails){
         int b=0;
     try{
-        url=new URL(serverUri+"/SetUserLoc?id="+id+"&locDetails="+locDetails);
+        url=new URL(serverUri+"SetUserLoc?id="+id+"&locDetails="+locDetails);
+        Log.i("gauravrmsc","set1"+url.toString());
         con=(HttpURLConnection)url.openConnection();
+        Log.i("gauravrmsc","set2");
         BufferedInputStream i=new BufferedInputStream(con.getInputStream());
-
+        Log.i("gauravrmsc","set3");
         b=Integer.parseInt(""+(char)i.read());
-
+        Log.i("gauravrmsc","set4");
     } catch (MalformedURLException e) {
         e.printStackTrace();
     } catch (IOException e) {
@@ -45,7 +65,6 @@ serverUri=context.getString(R.string.server);
         return b;
     }
     public  String Signup(Long phone,String name,String password){
-
 
         try {
           url =new URL(serverUri+"/signup?phone="+phone+"&name="+name+"&password="+password);
@@ -85,31 +104,39 @@ serverUri=context.getString(R.string.server);
     //return message;
     }
 
-    public void getProfile(Long id){
+    public ArrayList getProfile(Long id){
+        Log.i("gkm","2");
+        ArrayList<String> profileDetails=new ArrayList<>();
     try{
-        url=new URL(serverUri+"/GetProfile?id="+id);
+        Log.i("gkm","3");
+        url=new URL(serverUri+"GetProfile?id="+id);
         con=(HttpURLConnection)url.openConnection();
         BufferedInputStream i=new BufferedInputStream(con.getInputStream());
           String result="";
           int c;
           while((c=i.read())!=-1){
-              result+=(int)c;
+              result+=(char)c;
           }
+        Log.i("gkm","4");
          JSONObject profile=(JSONObject) new JSONParser().parse(result);
           String profession=profile.get("profession").toString();
           String professionDesc=profile.get("professionDesc").toString();
-          //TODO insert into db
+
+          profileDetails.add(0,profession);
+          profileDetails.add(1,professionDesc);
 
     }catch(MalformedURLException e){} catch (IOException e) {
         e.printStackTrace();
     } catch (ParseException e) {
         e.printStackTrace();
     }
+    return profileDetails;
     }
     public int setProfile(Long id,String profession,String professionDesc){
     int i=0;
         try {
-            url=new URL(serverUri+"/SetProfile?id="+id+"&profession="+profession+"&professionDesc="+professionDesc);
+
+            url=new URL(serverUri+"SetProfile?id="+id+"&Profession="+profession+"&ProfessionDesc="+professionDesc);
             con=(HttpURLConnection)url.openConnection();
             BufferedInputStream in=new BufferedInputStream(con.getInputStream());
             i=Integer.parseInt(""+(char)in.read());
@@ -118,6 +145,7 @@ serverUri=context.getString(R.string.server);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.i("gkk","6");
         return i;
 }
     public int subsequentHelpRequest(Long id,Double longitude,Double latitude){

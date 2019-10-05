@@ -1,18 +1,18 @@
 package com.volvain.yash;
 
 import android.os.Bundle;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.MenuItem;
 
-public class Home extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.volvain.yash.DAO.Database;
+
+public class Home extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener  {
 
 FloatingActionButton btn;
 
@@ -73,10 +73,15 @@ getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,f
                 fragment=new notificationsFragment();
                 break;
             case  R.id.login:
-                fragment=new loginFragment();
+                if(new Database(this).getId()!=0l)
+                    fragment=new Profile();
+
+               else fragment=new loginFragment();
                 break;
         }
         return loadFragment(fragment);
     }
+
+
 
 }
