@@ -64,7 +64,7 @@ public class HelpSync extends AppCompatActivity implements LocationListener {
            findLocationProvider();
        }
 
-           onLocationChanged(location);
+           //onLocationChanged(location);
        }
 
     @Override
