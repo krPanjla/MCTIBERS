@@ -1,5 +1,6 @@
 package com.volvain.yash;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -83,6 +84,7 @@ getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,f
         }
         return loadFragment(fragment);
     }
+    @RequiresApi(api = Build.VERSION_CODES.M)
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -99,15 +101,23 @@ getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,f
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void checkPermissions(Class c,String... s){
-       checkLoc.checkPermission();
-    checkLoc.displayLocationSettingsRequest(c,s);}
+     this.c=c;
+     this.args=s;
+   checkLoc.displayLocationSettingsRequest(c,s);
+        }
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String[] permissions, int[] grantResults) {
-        if (requestCode == 2) {
-            checkLoc.checkPermission();
-        }
 
-    }
-}
+        if (requestCode == 2) {
+
+            checkLoc.displayLocationSettingsRequest(c,args);
+
+                }
+            }
+          //  checkLoc.requestPermission();
+            }
+
+
+

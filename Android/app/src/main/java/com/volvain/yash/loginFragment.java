@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -153,7 +155,7 @@ public class loginFragment extends Fragment {
                             else if (workInfo != null && workInfo.getState() == WorkInfo.State.FAILED) {
                                 loading.dismiss();
                               //  loginPB.setVisibility(View.GONE);
-                                Toast.makeText(loginFragment.this.getContext(),"Error Adding Locations",Toast.LENGTH_LONG).show();
+                                Toast.makeText(loginFragment.this.getContext(),"You Do not have Saved Locations",Toast.LENGTH_LONG).show();
                                 errorGettingLoc();
                             }
                         }
@@ -173,10 +175,12 @@ private void errorGettingLoc(){
     AlertDialog.Builder builder=new AlertDialog.Builder(context,R.style.MyDialogTheme);
     builder.setMessage("In order to Receieve Help Request \nPlease Add Locations \nWhere We can Reach to you")
             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Intent i=new Intent(context,PinLocation.class);
-                    context.startActivity(i);
+                  //  Intent i=new Intent(context,PinLocation.class);
+                    //context.startActivity(i);
+                    Func();
                 }
             }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
         @Override
@@ -205,4 +209,14 @@ private void errorGettingLoc(){
         return loadingBuilder;
 
 }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void Func(){
+        Home home=(Home)getActivity();
+        home.c=PinLocation.class;
+        home.args=null;
+        home.checkPermissions(PinLocation.class,null);
+        // Intent i=new Intent(this.getContext(),PinLocation.class);
+        // startActivity(i);
+
+    }
 }

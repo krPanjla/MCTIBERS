@@ -8,10 +8,8 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -27,6 +25,7 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 public class CheckLocation{
     public static final int code=2;
     Class clas;
+    String[] parameter;
     int REQUEST_CHECK_SETTINGS=1;
     Context context;
     Activity activity;
@@ -35,15 +34,23 @@ public class CheckLocation{
         this.context = context;
         this.activity = activity;
     }
+       public boolean checkPermissions(){
+           if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+               return false;}
+           else return true;
+       }
         @RequiresApi(api = Build.VERSION_CODES.M)
-    public void checkPermission(){
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            activity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},this.code);
+    public void requestPermission(){
+
+            activity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},this.code);
 
         }
-    }
-    public void displayLocationSettingsRequest(final Class c, final String... s) {
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void displayLocationSettingsRequest(final Class c, final String... s) {
+        if(checkPermissions()==false)
+        requestPermission();
+        else{
         GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context)
                 .addApi(LocationServices.API).build();
         googleApiClient.connect();
@@ -97,6 +104,6 @@ public class CheckLocation{
             }
 
         });
-    }
+    }}
 
 }
