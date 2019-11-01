@@ -71,8 +71,8 @@ public class HelpSync extends AppCompatActivity implements LocationListener {
     public void onLocationChanged(Location location) {
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
-        Toast.makeText(this,"Request no "+no,Toast.LENGTH_LONG).show();
-        Log.i("fff","Request no"+no);
+        //Toast.makeText(this,"Request no "+no,Toast.LENGTH_LONG).show();
+       // Log.i("fff","Request no"+no);
         sendRequest(no,id,name,longitude,latitude,message);
        // Toast.makeText(this,"long="+longitude+"latitude=:"+latitude,Toast.LENGTH_LONG).show();
         no++;

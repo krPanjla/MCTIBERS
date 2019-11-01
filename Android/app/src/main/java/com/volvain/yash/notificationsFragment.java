@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -68,7 +69,6 @@ public class notificationsFragment extends Fragment {
                 Home home=((Home)getActivity());
                 home.c=MapsActivity.class;
                 home.args=message;
-                Log.i("3687g",message[0]);
                 home.checkPermissions(MapsActivity.class,message);
                //TODO Get id from here for search
             }

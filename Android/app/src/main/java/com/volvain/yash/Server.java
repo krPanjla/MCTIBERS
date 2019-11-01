@@ -141,6 +141,7 @@ first=1;
         try {
 
             url=new URL(serverUri+"SetProfile?id="+id+"&Profession="+profession+"&ProfessionDesc="+professionDesc);
+            Log.i("gauravrmsc",""+url);
             con=(HttpURLConnection)url.openConnection();
             BufferedInputStream in=new BufferedInputStream(con.getInputStream());
             i=Integer.parseInt(""+(char)in.read());

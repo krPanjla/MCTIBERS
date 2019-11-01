@@ -66,25 +66,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_margin="40dp"
-                android:background="@drawable/rounded_button"
+                android:background="@drawable/bg_orange"
                 android:text="Login"
-                android:textColor="#ffffff"
-                android:textSize="25dp" />
+                android:textColor="#000000"
+                android:textSize="20dp" />
 
             <Button
                 android:id="@+id/createAccount"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginLeft="40dp"
-
-
                 android:layout_marginRight="40dp"
                 android:layout_marginBottom="34dp"
-                android:background="@drawable/rounded_button"
-
+                android:background="@drawable/bg_orange"
                 android:text="Create account"
-                android:textColor="#ffffff"
-                android:textSize="25dp" />
+                android:textColor="#000000"
+                android:textSize="20dp" />
 
             <ProgressBar
                 android:id="@+id/loginPB"

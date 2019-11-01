@@ -2,6 +2,7 @@ package com.volvain.yash;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.work.Worker;
@@ -21,6 +22,7 @@ public class SetUserLocServer extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+        Log.i("gauravrmsc","1");
         Long id=new Database(context).getId();
         ArrayList arr=PinLocation.ListLocations;
         String userLoc=arr.toString();
