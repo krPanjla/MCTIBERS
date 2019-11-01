@@ -1,8 +1,7 @@
-# MCTIBERS
-This application provides social networking platform among students and other people. 
-It is an Android based application.
-Provides help on ruquest when needed.
-It will bring immediate help in case of emergengy
-With the help of location tracking system we can reach to exact location of the needy person.
-Inform everyone nearby and registered contact in case of emergency.
-Offline location tracking system when internet connection is not available.
+# STEP
+STEP is a social networking platform that one can use to ask for help when needed or offer help to people in need. This app tries to bring help from nearby people rather than sending an SOS message to relatives or Police who can be miles away when the SOS call is made. With the help of a location tracking system, we can reach the exact location of the needy person. It also offers an offline location tracking system when an internet connection is not available.
+---
+### You Can Download The apk file from here
+[Download Link](STEP.apk)
+---
+[Installation Steps](User%20Guide.pdf)
