@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -96,8 +97,10 @@ public class loginFragment extends Fragment {
                            // loginPB.setVisibility(View.GONE);
                             loading.dismiss();
                             Toast.makeText(loginFragment.this.getContext(),"Login Sucessful!",Toast.LENGTH_LONG).show();
-                            getLoc();
 
+                           Home.logoutBtn.setVisible(true);
+
+                            getLoc();
                             BackgroundWork.sync();
                         }
                         else if (workInfo != null && workInfo.getState() == WorkInfo.State.FAILED) {
@@ -219,4 +222,5 @@ private void errorGettingLoc(){
         // startActivity(i);
 
     }
+
 }

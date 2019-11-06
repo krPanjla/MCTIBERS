@@ -40,7 +40,7 @@
 
                         <Button
 
-                            android:id="@+id/helpButton"
+                            android:id="@+id/logo_button"
                             android:layout_width="170dp"
                             android:layout_height="170dp"
                             android:layout_gravity="center_horizontal"
@@ -74,7 +74,7 @@
                             android:id="@+id/button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_orange"
+                            android:background="@drawable/round_button_green"
                             android:textColor="#000000"
                             android:text="POLICE"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -89,7 +89,7 @@
                             android:layout_centerInParent="true"
                             android:textColor="#000000"
                             android:layout_gravity="center"
-                            android:background="@drawable/bg_orange"
+                            android:background="@drawable/round_button_green"
                             android:gravity="center"
                             android:paddingLeft="@dimen/activity_horizontal_margin"
                             android:paddingTop="@dimen/activity_vertical_margin"
@@ -106,7 +106,7 @@
                             android:id="@+id/button4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_orange"
+                            android:background="@drawable/round_button_green"
                             android:text="FIRE"
                             android:textColor="#000000"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -125,13 +125,13 @@
                         android:hint="Request message"
                         android:textSize="20dp" />
                     <Button
-                        android:id="@+id/logoutButton"
+                        android:id="@+id/helpButton"
 
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:layout_margin="40dp"
-                        android:background="@drawable/bg_round"
-                        android:text="LogOut"
+                        android:background="@drawable/rectangle_button_orange"
+                        android:text="HELP !"
                         android:textColor="#000000"
                         android:textSize="20dp"
                         android:layout_gravity="bottom"/>

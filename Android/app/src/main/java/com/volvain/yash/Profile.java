@@ -1,6 +1,7 @@
 package com.volvain.yash;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,6 +47,7 @@ public class Profile extends Fragment {
     private String profession="";
     private String professionDesc="";
     private long id=0l;
+    Button logoutButton;
     Database db;
     EditText nameTf;
     EditText idTf;
@@ -114,7 +116,13 @@ public class Profile extends Fragment {
                 submit();
             }
         });
-
+       /* logoutButton = v.findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });*/
         return v;
     }
     private void getProfile(){
@@ -243,4 +251,11 @@ public class Profile extends Fragment {
         return loadingBuilder;
 
     }
+   /* private void logout() {
+        WorkManager.getInstance().cancelAllWork();
+        Database obj = new Database(this.getContext());
+        obj.logout();
+        Intent i = new Intent(this.getContext(), Home.class);
+        startActivity(i);
+    }*/
 }

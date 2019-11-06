@@ -48,9 +48,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_margin="40dp"
-                android:background="@drawable/logoutbutton"
+                android:background="@drawable/round_button_green"
                 android:text="Stop"
-                android:textColor="#ffffff"
+                android:textColor="#000000"
                 android:textSize="25dp"
                 android:layout_gravity="bottom"/>
 

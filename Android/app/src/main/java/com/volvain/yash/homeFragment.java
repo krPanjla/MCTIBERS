@@ -26,7 +26,7 @@ import com.volvain.yash.DAO.Database;
 public class homeFragment extends Fragment {
     Button helpButton;
     TextView userName;
-    Button logoutButton;
+
     EditText RequestMessagetf;
 
     @Nullable
@@ -34,14 +34,9 @@ public class homeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, null);
         helpButton = v.findViewById(R.id.helpButton);
-        logoutButton = v.findViewById(R.id.logoutButton);
+
         RequestMessagetf = v.findViewById(R.id.RequestMessage);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
-        });
+
         helpButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -81,12 +76,6 @@ public class homeFragment extends Fragment {
             Toast.makeText(this.getContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
     }
 
-    private void logout() {
-        WorkManager.getInstance().cancelAllWork();
-        Database obj = new Database(this.getContext());
-        obj.logout();
-        Intent i = new Intent(this.getContext(), Home.class);
-        startActivity(i);
-    }
+
 }
 
