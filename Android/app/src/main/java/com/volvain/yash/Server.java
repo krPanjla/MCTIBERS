@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Server  {
-
+static int first=0;
 URL url;
 HttpURLConnection con;
 static String serverUri;
@@ -34,9 +34,12 @@ public String getUserLoc(Long id){
     String result="";
     try{
 
-        url=new URL(serverUri+"getUserLoc?id="+id);
+        url=new URL(serverUri+"GetUserLoc?id="+id);
+
         con=(HttpURLConnection)url.openConnection();
+
         BufferedInputStream in=new BufferedInputStream(con.getInputStream());
+
         int i=0;
         while((i=in.read())!=-1)result+=(char)i;
     } catch (MalformedURLException e) {
@@ -44,6 +47,7 @@ public String getUserLoc(Long id){
     } catch (IOException e) {
         e.printStackTrace();
     }
+    Log.i("userData",result);
     return result;
 }
     public int SendUserLoc(Long id,String locDetails){
@@ -94,7 +98,7 @@ public String getUserLoc(Long id){
            /* int b=-;
             while((b=i.read())!=-1)message+=(char)b;*/
            m=Integer.parseInt(""+(char)i.read());
-
+first=1;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -137,6 +141,7 @@ public String getUserLoc(Long id){
         try {
 
             url=new URL(serverUri+"SetProfile?id="+id+"&Profession="+profession+"&ProfessionDesc="+professionDesc);
+            Log.i("gauravrmsc",""+url);
             con=(HttpURLConnection)url.openConnection();
             BufferedInputStream in=new BufferedInputStream(con.getInputStream());
             i=Integer.parseInt(""+(char)in.read());
@@ -152,16 +157,16 @@ public String getUserLoc(Long id){
         Log.i("gauravrmsc","Sending Subsequent request");
         int m=-2;
         try {
-
-            url=new URL(serverUri+"/subsequentReq?id="+id+"&longitude="+longitude+"&latitude="+latitude);
-            con=(HttpURLConnection)url.openConnection();
-            BufferedInputStream i=new BufferedInputStream(con.getInputStream());
-            Log.i("gauravrmsc","received Subsequent request");
+if(first>0) {
+    url = new URL(serverUri + "/subsequentReq?id=" + id + "&longitude=" + longitude + "&latitude=" + latitude);
+    con = (HttpURLConnection) url.openConnection();
+    BufferedInputStream i = new BufferedInputStream(con.getInputStream());
+    Log.i("gauravrmsc", "received Subsequent request");
             /*int b=0;
             while((b=i.read())!=-1)message+=(char)b;*/
-            m=Integer.parseInt(""+(char)i.read());
+    m = Integer.parseInt("" + (char) i.read());
 
-        } catch (MalformedURLException e) {
+}} catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             Log.i("gauravrmsc",""+e);

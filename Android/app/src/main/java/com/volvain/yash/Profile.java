@@ -1,5 +1,7 @@
 package com.volvain.yash;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -43,6 +47,7 @@ public class Profile extends Fragment {
     private String profession="";
     private String professionDesc="";
     private long id=0l;
+    Button logoutButton;
     Database db;
     EditText nameTf;
     EditText idTf;
@@ -50,6 +55,8 @@ public class Profile extends Fragment {
     EditText ProfessionDescTf;
     Button submit;
     private OnFragmentInteractionListener mListener;
+    private AlertDialog.Builder loadingBuilder;
+    private AlertDialog loading;
 
     public Profile() {
         // Required empty public constructor
@@ -75,18 +82,22 @@ public class Profile extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
       View v=  inflater.inflate(R.layout.fragment_profile2, container, false);
-        db=new Database(this.getContext());
+        loading =getDialogProgressBar().create();
+      db=new Database(this.getContext());
         id=db.getId();
         name=db.getName();
         getProfile();
@@ -105,7 +116,13 @@ public class Profile extends Fragment {
                 submit();
             }
         });
-
+       /* logoutButton = v.findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });*/
         return v;
     }
     private void getProfile(){
@@ -113,25 +130,29 @@ public class Profile extends Fragment {
 
             OneTimeWorkRequest work=new OneTimeWorkRequest.Builder(getProfileServer.class)
                                     .build();
-            Log.i("gkm","x");
+
             WorkManager.getInstance().enqueue(work);
-            Log.i("gkm","y");
+
             WorkManager.getInstance().getWorkInfoByIdLiveData(work.getId())
                     .observe(this, new Observer<WorkInfo>() {
                         @Override
                         public void onChanged(@Nullable WorkInfo workInfo) {
                             if (workInfo != null && workInfo.getState() == WorkInfo.State.SUCCEEDED) {
-                                Toast.makeText(Profile.this.getContext(),"Profile Data Received",Toast.LENGTH_LONG).show();
+                                loading.dismiss();
+
                                 profession=getProfileServer.Profession;
                                 professionTf.setText(profession);
                                 professionDesc=getProfileServer.ProfessionDesc;
                                 ProfessionDescTf.setText(professionDesc);
+                                Toast.makeText(Profile.this.getContext(),"Profile Data Received",Toast.LENGTH_LONG).show();
                             }
                             else if(workInfo != null && workInfo.getState() == WorkInfo.State.RUNNING){
-                                Toast.makeText(Profile.this.getContext(),"Loading Profile",Toast.LENGTH_LONG).show();
+                               loading.show();
+                                // Toast.makeText(Profile.this.getContext(),"Loading Profile",Toast.LENGTH_LONG).show();
                             }
                             else if (workInfo != null && workInfo.getState() == WorkInfo.State.FAILED) {
-                                Toast.makeText(Profile.this.getContext(),"Error Receiving Profile",Toast.LENGTH_LONG).show();
+                            loading.dismiss();
+                                   Toast.makeText(Profile.this.getContext(),"Error Receiving Profile",Toast.LENGTH_LONG).show();
                             }
                         }
                     });
@@ -144,28 +165,31 @@ public class Profile extends Fragment {
 
         if(Global.checkInternet()==0){
             profession=professionTf.getText().toString();
-            Toast.makeText(this.getContext(),profession,Toast.LENGTH_LONG).show();
-            Log.i("gmk",profession);
+
+
             professionDesc=ProfessionDescTf.getText().toString();
-            Log.i("gkk","gkk");
+
             Data d=new Data.Builder()
                     .putString("profession",profession)
                     .putString("professionDesc",professionDesc).build();
             OneTimeWorkRequest work=new OneTimeWorkRequest.Builder(SetProfileServer.class)
                     .setInputData(d).build();
-            Log.i("gkk","gkk1");
+
             WorkManager.getInstance().enqueue(work);
-            Log.i("gkk","gkk2");
+
             WorkManager.getInstance().getWorkInfoByIdLiveData(work.getId())
                     .observe(this, new Observer<WorkInfo>() {
                         @Override
                         public void onChanged(@Nullable WorkInfo workInfo) {
                             if (workInfo != null && workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+                              loading.dismiss();
                                 Toast.makeText(Profile.this.getContext(),"Profile Update Sucessful!",Toast.LENGTH_LONG).show();
                             }
                             if (workInfo != null && workInfo.getState() == WorkInfo.State.RUNNING||workInfo.getState() == WorkInfo.State.ENQUEUED)
-                                Toast.makeText(Profile.this.getContext(), "Processing!", Toast.LENGTH_LONG).show();
+                                loading.show();
+                                //Toast.makeText(Profile.this.getContext(), "Processing!", Toast.LENGTH_LONG).show();
                             else if (workInfo != null && workInfo.getState() == WorkInfo.State.FAILED) {
+                               loading.dismiss();
                                 Toast.makeText(Profile.this.getContext(),"Error",Toast.LENGTH_LONG).show();
                             }
                         }
@@ -210,4 +234,28 @@ public class Profile extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    public AlertDialog.Builder getDialogProgressBar() {
+
+        if (loadingBuilder == null) {
+            loadingBuilder = new AlertDialog.Builder(this.getContext());
+
+            loadingBuilder.setTitle("Loading...");
+
+            final ProgressBar progressBar = new ProgressBar(this.getContext());
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            progressBar.setLayoutParams(lp);
+            loadingBuilder.setView(progressBar);
+        }
+        return loadingBuilder;
+
+    }
+   /* private void logout() {
+        WorkManager.getInstance().cancelAllWork();
+        Database obj = new Database(this.getContext());
+        obj.logout();
+        Intent i = new Intent(this.getContext(), Home.class);
+        startActivity(i);
+    }*/
 }
