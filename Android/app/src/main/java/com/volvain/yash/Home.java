@@ -5,20 +5,24 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.work.WorkManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.volvain.yash.DAO.Database;
 
 public class Home extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener  {
-
-FloatingActionButton btn;
+static MenuItem logoutBtn;
+    Database db;
+//FloatingActionButton btn;
  CheckLocation checkLoc;
  Class c=null;
  String[] args=null;
@@ -27,7 +31,7 @@ FloatingActionButton btn;
     protected void onCreate(Bundle savedInstanceState) {
 
         //Server.serverUri="https://projectmctibers.appspot.com";
-        Database db= new Database(this);
+       db= new Database(this);
         //TODO if id exists
         super.onCreate(savedInstanceState);
         Server.serverUri=this.getString(R.string.server);
@@ -44,11 +48,14 @@ FloatingActionButton btn;
        if(this.getIntent().hasExtra("fragmentNo")){
             if(this.getIntent().getStringExtra("fragmentNo").equals("NotificationFragment"))
                 loadFragment(new notificationsFragment());}
-        else loadFragment(new homeFragment());}
+        else loadFragment(new homeFragment());
+        }
 
-        else{ loadFragment(new loginFragment());}
+        else{
+            loadFragment(new loginFragment());
+        }
         checkLoc=new CheckLocation(this,this);
-
+//        logoutBtn=getMenu().findItem(R.id.login_menu_id).
     }
 
     private  boolean loadFragment(Fragment fragment){
@@ -81,6 +88,8 @@ getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,f
 
                else fragment=new loginFragment();
                 break;
+                case R.id.logout_top:
+                    logout();
         }
         return loadFragment(fragment);
     }
@@ -117,6 +126,31 @@ getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,f
                 }
             }
           //  checkLoc.requestPermission();
+          private void logout() {
+              WorkManager.getInstance().cancelAllWork();
+              Database obj = new Database(this);
+              obj.logout();
+              logoutBtn.setVisible(false);
+              Intent i = new Intent(this, Home.class);
+              startActivity(i);
+          }
+          @Override
+          public boolean onCreateOptionsMenu(Menu menu){
+             MenuInflater inflater=getMenuInflater();
+              inflater.inflate(R.menu.top_menu,menu);
+              super.onCreateOptionsMenu(menu);
+             logoutBtn=menu.getItem(0);
+             if(!db.checkId())
+              logoutBtn.setVisible(false);
+     return true;
+          }
+          @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+
+     logout();
+     item.setVisible(false);
+     return super.onOptionsItemSelected(item);
+          }
             }
 
 
